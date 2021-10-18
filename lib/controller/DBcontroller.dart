@@ -9,7 +9,7 @@ void writeDB (Chat _chat) async{
   final database = openDatabase(
     // 데이터베이스 경로를 지정합니다. 참고: `path` 패키지의 `join` 함수를 사용하는 것이
     // 각 플랫폼 별로 경로가 제대로 생성됐는지 보장할 수 있는 가장 좋은 방법입니다.
-    join(await getDatabasesPath(), 'chat_database.db'),
+    join(await getDatabasesPath(), 'chat_log_database.db'),
     // 데이터베이스가 처음 생성될 때, dog를 저장하기 위한 테이블을 생성합니다.
     onCreate: (db, version) {
       return db.execute(
@@ -38,7 +38,7 @@ Future<List<Chat>> readDB (String partyUUID) async{
   final database = openDatabase(
     // 데이터베이스 경로를 지정합니다. 참고: `path` 패키지의 `join` 함수를 사용하는 것이
     // 각 플랫폼 별로 경로가 제대로 생성됐는지 보장할 수 있는 가장 좋은 방법입니다.
-    join(await getDatabasesPath(), 'chat_database.db'),
+    join(await getDatabasesPath(), 'chat_log_database.db'),
     // 데이터베이스가 처음 생성될 때, dog를 저장하기 위한 테이블을 생성합니다.
     onCreate: (db, version) {
       return db.execute(
