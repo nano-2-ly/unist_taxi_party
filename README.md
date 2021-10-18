@@ -15,4 +15,5 @@ To solve this problem. We decide to take a taxi.🚕 It's expensive but fast. Wh
 https://water-donut-217.notion.site/20210926-7247f262727443eeaedeed679be95eb3
 
 ### System architecture
-< here is image area >
+\* In "*unist_taxi_party/readmeAsset/architecture.pdf*", your can see pdf file also.
+![title](/readmeAsset/architecture.png){: width="100" height="100"}
