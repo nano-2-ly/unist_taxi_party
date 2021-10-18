@@ -35,6 +35,13 @@ dependencies:
   flutter_login: ^2.2.1
   get: ^4.3.8
 
+  firebase_messaging: ^10.0.8
+  firebase_core: ^1.7.0
+  flutter_local_notifications: ^8.1.1+1
+  http: ^0.13.1
+  sqflite: ^2.0.0+4
+  path: ^1.8.0
+
 
 dev_dependencies:
   flutter_test:

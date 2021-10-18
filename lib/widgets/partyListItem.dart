@@ -13,7 +13,7 @@ class PartyListItemWidget extends StatelessWidget {
     return Card(
       child: ListTile(
         onTap: (){
-          Get.toNamed('/');
+          Get.toNamed('/party-join-confirm', arguments: partyItem);
         },
         title: Text(
           '${partyItem.departure} ➡ ${partyItem.arrival}',

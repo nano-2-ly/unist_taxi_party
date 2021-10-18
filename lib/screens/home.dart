@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:get/get.dart';
-import 'package:unist_taxt_party_app/models/authData.dart';
+import 'package:unist_taxt_party_app/controller/authDataController.dart';
 import 'package:unist_taxt_party_app/widgets/bottomBar.dart';
 import 'package:unist_taxt_party_app/widgets/overview.dart';
 import 'package:unist_taxt_party_app/widgets/search.dart';
@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   AuthUser? _user;
   @override
+  var controller = Get.put(AuthDataController());
   void initState() {
     super.initState();
 
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         setState(() {
           _user = user;
+          controller.authData.value = user;
         });
       }).catchError((error) {
         print((error as AuthException).message);
