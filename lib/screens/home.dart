@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:unist_taxt_party_app/models/authData.dart';
 import 'package:unist_taxt_party_app/widgets/bottomBar.dart';
 import 'package:unist_taxt_party_app/widgets/overview.dart';
+import 'package:unist_taxt_party_app/widgets/search.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: NeverScrollableScrollPhysics(),
           children:[
             Overview(),
-            Container(),
+            SeachWidget(),
             Container(),
           ],
         ),
