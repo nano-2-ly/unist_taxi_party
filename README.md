@@ -1,16 +1,18 @@
-# unist_taxt_party_app
+# TAXIPART(택시팟)
+~~~
+Here is taxipart app repository.
+~~~
+## Vision
+UNIST transportation infra is really bad.😢 (What is UNIST? <a href = "https://www.unist.ac.kr/">click here</a>)<br>
+Bad infra makes people go labs or companies located in other cities. And it makes students less creative.<br>
+To go outside of UNIST, we have to wait bus for 30min. And take the bus for 10~20 min to go the nearest village(ex 구영리).<br>
+<br>
+To solve this problem. We decide to take a taxi.🚕 It's expensive but fast. When we take the taxi with 4 people, It can be also cheap because we split the bill.<br>
+**TAXIPART** app will find your carpool easily,Then we can go everywhere fast and cheaply.😎😎😎<br>
 
-A new Flutter application.
+## Overview
+### Proposal(language: Korean)
+https://water-donut-217.notion.site/20210926-7247f262727443eeaedeed679be95eb3
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### System architecture
+< here is image area >
