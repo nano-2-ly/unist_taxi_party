@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:unist_taxt_party_app/controller/DBcontroller.dart';
 import 'package:unist_taxt_party_app/controller/authDataController.dart';
 import 'package:unist_taxt_party_app/controller/chatController.dart';
+import 'package:unist_taxt_party_app/controller/chatScrollController.dart';
 import 'package:unist_taxt_party_app/controller/partyController.dart';
 import 'package:unist_taxt_party_app/models/party.dart';
 import 'package:unist_taxt_party_app/widgets/partyListItem.dart';
@@ -18,6 +19,7 @@ class SendChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var partyController = Get.put(PartyController());
+    final chatScrollController = Get.put(ChatScrollController());
     return Container(
       color: Colors.deepPurple,
       height: 50,

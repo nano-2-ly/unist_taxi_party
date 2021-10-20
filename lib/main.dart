@@ -11,6 +11,7 @@ import 'package:unist_taxt_party_app/screens/party_join_confirm.dart';
 
 import 'controller/DBcontroller.dart';
 import 'controller/chatController.dart';
+import 'controller/chatScrollController.dart';
 import 'controller/partyController.dart';
 import 'models/chat.dart';
 import 'models/party.dart';
@@ -78,6 +79,7 @@ void fcm_ready() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final controller = Get.put(ChatController());
   final partyController = Get.put(PartyController());
+
 // use the returned token to send messages to users from your custom server
 
   print('FlutterFire Messaging Example: Subscribing to topic "1".');
@@ -109,7 +111,7 @@ void fcm_ready() async {
       }else{
         print("3");
         controller.addChat(_chat);
-        print("add ! ");
+
       }
 
     }
