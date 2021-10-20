@@ -81,11 +81,11 @@ void fcm_ready() async {
 // use the returned token to send messages to users from your custom server
 
   print('FlutterFire Messaging Example: Subscribing to topic "1".');
-  await FirebaseMessaging.instance.subscribeToTopic("room1");
+  await FirebaseMessaging.instance.subscribeToTopic("0001");
   print('FlutterFire Messaging Example: Subscribing to topic "1" successful.');
 
   print('FlutterFire Messaging Example: Subscribing to topic "2".');
-  await FirebaseMessaging.instance.subscribeToTopic("room2");
+  await FirebaseMessaging.instance.subscribeToTopic("0002");
   print('FlutterFire Messaging Example: Subscribing to topic "2" successful.');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -101,10 +101,15 @@ void fcm_ready() async {
 
       writeDB(_chat);
 
-      if(partyController.party.value != _chat.chatUUID) {
+
+      print("1");
+      if(partyController.party.value.partyUUID != _chat.partyUUID) {
+        print("2");
         _showNotification(message);
       }else{
+        print("3");
         controller.addChat(_chat);
+        print("add ! ");
       }
 
     }
@@ -146,8 +151,7 @@ void _initNotiSetting() async {
 Future<void> _showNotification(RemoteMessage message) async {
   var _flutterLocalNotificationsPlugin;
 
-  var initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/launcher_icon');
+  var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
   var initializationSettingsIOS = IOSInitializationSettings();
 
   var initializationSettings = InitializationSettings(

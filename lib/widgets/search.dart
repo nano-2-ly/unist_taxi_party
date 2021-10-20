@@ -13,7 +13,6 @@ class SeachWidget extends StatelessWidget {
           children: [
             PartyListItemWidget(partyItem: Party("0001","유니스트","울산역KTX","description","기숙사 광장","am 3:00","udpateAt","createAt","nanotoly",),),
             PartyListItemWidget(partyItem: Party("0002","유니스트","울산역KTX","description","기숙사 광장","am 3:00","udpateAt","createAt","nanotoly",),),
-
           ],
         )
     );

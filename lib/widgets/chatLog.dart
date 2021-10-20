@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
+import 'package:unist_taxt_party_app/controller/DBcontroller.dart';
+import 'package:unist_taxt_party_app/controller/chatController.dart';
+import 'package:unist_taxt_party_app/controller/partyController.dart';
 import 'package:unist_taxt_party_app/models/chat.dart';
 import 'package:unist_taxt_party_app/models/party.dart';
 import 'package:unist_taxt_party_app/widgets/chatListItem.dart';
@@ -9,16 +13,26 @@ class ChatLogWidget extends StatelessWidget {
   const ChatLogWidget({Key? key}) : super(key: key);
 
   @override
+
   Widget build(BuildContext context) {
+    final controller = Get.put(ChatController());
+    final partyController = Get.put(PartyController());
+
+    // controller.chatList.value =  readDB(partyController.party.value.partyUUID);
+    controller.chatList.value=[];
+    controller.loadChat(partyController.party.value.partyUUID);
+
     return Container(
 
-        child: ListView(
-          children: [
-            ChatListItemWidget(chatItem: Chat("0001","partyUUID","uid", "createAt","content"),),
-            ChatListItemWidget(chatItem: Chat("0001","partyUUID","uid", "createAt","content"),),
-
-          ],
-        )
+        child: Obx(()=>ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: controller.chatList.length ,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) return Container();
+            return ChatListItemWidget(chatItem:controller.chatList.value[index]);
+          },
+        ))
     );
   }
 }
+
