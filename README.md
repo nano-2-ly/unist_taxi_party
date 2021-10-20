@@ -12,7 +12,8 @@ To solve this problem. We decide to take a taxi.🚕 It's expensive but fast. Wh
 
 ## Overview
 ### Proposal(language: Korean)
-https://water-donut-217.notion.site/20210926-7247f262727443eeaedeed679be95eb3
+https://water-donut-217.notion.site/13a3915f18364791812e3fc7e6c7a6b4
 
 ### System architecture
-< here is image area >
+\* In <a href="https://github.com/nano-2-ly/unist_taxi_party/blob/master/readmeAsset/architecture.pdf">"*unist_taxi_party/readmeAsset/architecture.pdf*"</a>, your can see pdf file also.
+![title](/readmeAsset/architecture.png)
