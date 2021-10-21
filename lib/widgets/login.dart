@@ -16,9 +16,9 @@ class _LoginState extends State<Login> {
   Future<String> _onLogin(LoginData data) async {
 
     try {
-      if(data.name.split("@").last!="unist.ac.kr"){
-        return "only \'@unist.ac.kr\' email can use app.";
-      }
+      // if(data.name.split("@").last!="unist.ac.kr"){
+      //   return "only \'@unist.ac.kr\' email can use app.";
+      // }
       final res = await Amplify.Auth.signIn(
         username: data.name,
         password: data.password,
@@ -56,9 +56,9 @@ class _LoginState extends State<Login> {
   Future<String> _onSignup(LoginData data) async {
 
     try {
-      if(data.name.split("@").last!="unist.ac.kr"){
-        return "only \'@unist.ac.kr\' email can use app.";
-      }
+      // if(data.name.split("@").last!="unist.ac.kr"){
+      //   return "only \'@unist.ac.kr\' email can use app.";
+      // }
       await Amplify.Auth.signUp(
         username: data.name,
         password: data.password,
@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
       ),
       onSubmitAnimationCompleted: () {
         if(_isSignedIn){
-          Get.toNamed("/home");
+          Get.toNamed("/");
         }else{
           Get.toNamed("/confirm");
         }

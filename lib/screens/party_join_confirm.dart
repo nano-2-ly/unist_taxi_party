@@ -74,7 +74,7 @@ class PartyJoinConfirmScreen extends StatelessWidget {
               ),
               FlatButton(
                 onPressed: () {
-                  Get.toNamed("/party", arguments: Get.arguments);
+                  Get.offAndToNamed("/party", arguments: Get.arguments);
                 },
                 child: Container(
                   width: 300,
