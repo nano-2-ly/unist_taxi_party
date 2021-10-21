@@ -20,6 +20,10 @@ class SendChatWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var partyController = Get.put(PartyController());
     final chatScrollController = Get.put(ChatScrollController());
+
+    final textController = TextEditingController();
+
+
     return Container(
       color: Colors.deepPurple,
       height: 50,
@@ -27,9 +31,15 @@ class SendChatWidget extends StatelessWidget {
       child: Center(
         child: Row(
           children: [
+            Container(
+              width: 100,
+              child: TextField(
+                controller: textController,
+              ),
+            ),
             FlatButton(
               onPressed: () {
-                makePushNotification();
+                sendChat(textController.text);
                 readDB(partyController.party.value.partyUUID);
               },
               child: Text("chat area"),
@@ -46,6 +56,29 @@ class SendChatWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void sendChat(text) async{
+    var authController = Get.put(AuthDataController());
+    var partyController = Get.put(PartyController());
+
+    print("send");
+    var url = Uri.parse("https://userserver.bighornapi.com/lambda/pushNotification");
+
+    http.Response response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:  jsonEncode(
+          <String, String>{
+            'code':partyController.party.value.partyUUID,
+            "content":"{\"chatUUID\":\"${partyController.party.value.partyUUID}\", \"partyUUID\":\"${partyController.party.value.partyUUID}\",\"uid\":\"${authController.authData.value.username}\",\"createAt\":\"${DateTime.now()}\",\"content\":\"${text}\"}",
+          }
+      ),
+    );
+
+    print(response.body);
   }
 
   void makePushNotification() async{

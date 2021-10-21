@@ -48,6 +48,7 @@ class _MyApp extends State<MyApp> {
     fcm_ready();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     _initNotiSetting();
+    _initScrollControllerSetting();
   }
 
   @override
@@ -131,6 +132,24 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   Chat _chat = Chat.fromJson(jsonDecode(message.notification!.body!));
   writeDB(_chat);
 }
+
+void _initScrollControllerSetting() {
+  final chatScrollontroller = Get.put(ChatScrollController());
+
+  chatScrollontroller.scrollController.value.addListener(() {
+    if (chatScrollontroller.scrollController.value.position.atEdge) {
+      if (chatScrollontroller.scrollController.value.position.pixels == 0) {
+        // You're at the top.
+      } else {
+        chatScrollontroller.chatAlwaysFocusToBottom.value = true;
+      }
+    }
+    else{
+      chatScrollontroller.chatAlwaysFocusToBottom.value = false;
+    }
+  });
+}
+
 
 void _initNotiSetting() async {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

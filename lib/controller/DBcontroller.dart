@@ -56,8 +56,8 @@ Future<List<Chat>> readDB (String partyUUID) async{
   // `conflictAlgorithm`을 명시할 수 있습니다.
   //
   // 본 예제에서는, 이전 데이터를 갱신하도록 하겠습니다.
-  List<Map<String,dynamic>> maps = await  db.rawQuery('SELECT * FROM chat WHERE partyUUID=?', ['$partyUUID']);
-
+  List<Map<String,dynamic>> maps = await  db.rawQuery('SELECT * FROM chat WHERE partyUUID=? ORDER BY id DESC LIMIT 30', ['$partyUUID']);
+  maps = List.from(maps.reversed);
   List<Chat> _chatList = [];
   for(int i=0; i< maps.length; i++){
     _chatList.add(Chat(maps[i]['chatUUID'],maps[i]['partyUUID'],maps[i]['uid'],maps[i]['createAt'],maps[i]['content']));

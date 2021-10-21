@@ -24,6 +24,8 @@ class ChatLogWidget extends StatelessWidget {
     controller.chatList.value=[];
     controller.loadChat(partyController.party.value.partyUUID);
 
+
+
     return Container(
 
         child: Obx(()=>ListView.builder(

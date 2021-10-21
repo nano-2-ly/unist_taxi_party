@@ -18,16 +18,22 @@ class ChatController extends GetxController{
     final chatScrollController = Get.put(ChatScrollController());
     chatList.add(chatItem);
 
-
-    Future.delayed(const Duration(milliseconds: 100), () {
-      chatScrollController.focusToBottom();
-    });
-
+    if(chatScrollController.chatAlwaysFocusToBottom.value == true){
+      Future.delayed(const Duration(milliseconds: 100), () {
+        chatScrollController.focusToBottom();
+      });
+    }
 
   }
 
   void loadChat(partyUUID)async{
     final partyController = Get.put(PartyController());
+    final chatScrollController = Get.put(ChatScrollController());
     chatList.value = await readDB(partyController.party.value.partyUUID);
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      chatScrollController.focusToBottom();
+    });
+
   }
 }
