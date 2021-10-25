@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:unist_taxt_party_app/screens/party.dart';
+import 'package:unist_taxt_party_app/screens/party_create.dart';
 import 'package:unist_taxt_party_app/screens/party_join_confirm.dart';
 
 import 'controller/DBcontroller.dart';
@@ -67,6 +68,7 @@ class _MyApp extends State<MyApp> {
         GetPage(name: '/confirm-reset', page: () => ConfirmResetScreen()),
         GetPage(name: '/party-join-confirm', page: () => PartyJoinConfirmScreen()),
         GetPage(name: '/party', page: () => PartyScreen()),
+        GetPage(name: '/party-create', page: () => PartyCreateScreen()),
       ],
 
     );

@@ -15,19 +15,19 @@ class Overview extends StatelessWidget {
         children: [
           Container(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: HotSpot(partyInfo: Party("a","a","울산역KTX","a","a","a","a","a","a",),)),
+              child: HotSpot(partyInfo: Party("a","a","울산역KTX","a","a","a","a","a","a",[]),)),
           Container(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: HotSpot(partyInfo: Party("a","a","구영리","a","a","a","a","a","a",),)),
+              child: HotSpot(partyInfo: Party("a","a","구영리","a","a","a","a","a","a",[]),)),
           Container(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: HotSpot(partyInfo: Party("a","a","천상리","a","a","a","a","a","a",),)),
+              child: HotSpot(partyInfo: Party("a","a","천상리","a","a","a","a","a","a",[]),)),
           Container(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: HotSpot(partyInfo: Party("a","a","울산대","a","a","a","a","a","a",),)),
+              child: HotSpot(partyInfo: Party("a","a","울산대","a","a","a","a","a","a",[]),)),
           Container(
               padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: HotSpot(partyInfo: Party("a","a","울산공항","a","a","a","a","a","a",),)),
+              child: HotSpot(partyInfo: Party("a","a","울산공항","a","a","a","a","a","a",[]),)),
         ],
       )
     );

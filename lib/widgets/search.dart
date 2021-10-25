@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:amplify_api/amplify_api.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:unist_taxt_party_app/models/party.dart';
@@ -9,12 +13,73 @@ class SeachWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: ListView(
-          children: [
-            PartyListItemWidget(partyItem: Party("0001","유니스트","울산역KTX","description","기숙사 광장","am 3:00","udpateAt","createAt","nanotoly",),),
-            PartyListItemWidget(partyItem: Party("0002","유니스트","울산역KTX","description","기숙사 광장","am 3:00","udpateAt","createAt","nanotoly",),),
-          ],
-        )
+        child:
+        FutureBuilder(
+            future: getParty(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+              if (snapshot.hasData == false) {
+                return Center(child: CircularProgressIndicator());
+              }
+              //error가 발생하게 될 경우 반환하게 되는 부분
+              else if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              }
+              // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+              else {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PartyListItemWidget(partyItem: Party.fromJson(snapshot.data[index]));
+                    },
+                  )
+                );
+              }
+            })
+
     );
+  }
+}
+
+Future<List<dynamic>> getParty() async{
+  try {
+    String graphQLDocument = '''query GetPartyList {
+      listParties {
+        items {
+          id
+          updatedAt
+          when
+          users
+          where
+          description
+          departure
+          createdAt
+          arrival
+        }
+      }
+    }''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+            document: graphQLDocument,
+            ));
+
+    var response = await operation.response;
+    Map data = jsonDecode(response.data);
+    print('Query result: ' + data['listParties']["items"][0].toString());
+    List<dynamic> userList  = data['listParties']["items"];
+    return  userList;
+  } on ApiException catch (e) {
+    print('Query failed: $e');
+    return  [];
   }
 }

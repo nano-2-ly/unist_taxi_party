@@ -1,0 +1,9 @@
+type Party @model {
+  id: ID!
+  departure: String!
+  arrival: String!
+  description: String!
+  where: String!
+  when: String!
+  users: [String]!
+}

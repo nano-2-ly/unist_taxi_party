@@ -23,7 +23,7 @@ class PartyListItemWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          '${partyItem.meetAt}',
+          '${partyItem.when}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
