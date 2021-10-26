@@ -17,6 +17,7 @@ class ChatListItemWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     var controller = Get.put(AuthDataController());
+    print(controller.authData.value.username);
     return Container(
       padding: (chatItem.uid != controller.authData.value.username)?EdgeInsets.fromLTRB(0, 0, 100, 0):EdgeInsets.fromLTRB(100, 0, 0, 0),
       child: Card(

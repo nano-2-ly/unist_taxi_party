@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:unist_taxt_party_app/controller/joinedPartyController.dart';
+import 'package:unist_taxt_party_app/models/joinedParty.dart';
 import 'package:unist_taxt_party_app/screens/party.dart';
 import 'package:unist_taxt_party_app/screens/party_create.dart';
 import 'package:unist_taxt_party_app/screens/party_join_confirm.dart';
@@ -47,6 +50,7 @@ class _MyApp extends State<MyApp> {
   void initState() {
     super.initState();
     fcm_ready();
+    readJoinedParty();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     _initNotiSetting();
     _initScrollControllerSetting();
@@ -82,16 +86,12 @@ void fcm_ready() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final controller = Get.put(ChatController());
   final partyController = Get.put(PartyController());
-
+  final joinedPartyController = Get.put(JoinedPartyController());
 // use the returned token to send messages to users from your custom server
-
-  print('FlutterFire Messaging Example: Subscribing to topic "1".');
-  await FirebaseMessaging.instance.subscribeToTopic("0001");
-  print('FlutterFire Messaging Example: Subscribing to topic "1" successful.');
-
-  print('FlutterFire Messaging Example: Subscribing to topic "2".');
-  await FirebaseMessaging.instance.subscribeToTopic("0002");
-  print('FlutterFire Messaging Example: Subscribing to topic "2" successful.');
+  for(int i=0; i< joinedPartyController.joinedPartyList.length; i++){
+    print('FlutterFire Messaging Example: Subscribing to topic "${joinedPartyController.joinedPartyList[i]}".');
+    await FirebaseMessaging.instance.subscribeToTopic(joinedPartyController.joinedPartyList[i].partyUUID);
+  }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');
@@ -197,4 +197,36 @@ Future<void> _showNotification(RemoteMessage message) async {
     detail,
     payload: 'Hello Flutter',
   );
+}
+
+
+void readJoinedParty() async{
+  final joinedPartyController = Get.put(JoinedPartyController());
+  try {
+    String graphQLDocument = '''query GetJoinedParties {
+      listJoinedParties {
+        items {
+          available
+          id
+          partyUUID
+          uid
+        }
+      }
+    }''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+            document: graphQLDocument,
+            variables: {})
+    );
+
+    var response = await operation.response;
+    var data = response.data;
+    print(jsonDecode(data)["listJoinedParties"]["items"]);
+    var temp  = jsonDecode(data)["listJoinedParties"]["items"].map((s)=> JoinedParty.fromJson(s)).toList();
+    print(temp);
+    joinedPartyController.joinedPartyList.value = jsonDecode(data)["listJoinedParties"]["items"].map((s)=> JoinedParty.fromJson(s)).toList();
+  } on ApiException catch (e) {
+    print('Query failed: $e');
+  }
 }

@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
           floatingActionButton: FloatingActionButton(
             onPressed: () async{
               Get.toNamed('/party-create');
-              await createPartyGQL();
+              // await createPartyGQL();
             },
             child: const Icon(Icons.add),
             backgroundColor: Colors.deepPurple,
@@ -84,43 +84,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Future<dynamic> createPartyGQL() async{
-  String graphQLDocument = '''mutation createParty {
-    createParty(input: {arrival: "구영리",
-      departure: "유니스트", 
-      description: "버스정류장에서 출발할 분 구합니다. 천원만 내세요. 나머지는 제가 부담합니다. 빨리요.ㅠㅠ", 
-      users: [""], 
-      when: "2021-10-26 14:00:00", 
-      where: "버스정류장"}) {
-      id
-      arrival
-      createdAt
-      departure
-      description
-      updatedAt
-      users
-      when
-      where
-    }
-  }''';
-
-  var variables = {
-    "arrival": "구영리",
-    "departure": "유니스트",
-    "description": "버스정류장에서 출발할 분 구합니다. 천원만 내세요. 나머지는 제가 부담합니다. 빨리요.ㅠㅠ",
-    "users": [""],
-    "when": "2021-10-26 14:00:00",
-    "where": "버스정류장",
-  };
-
-  var operation = Amplify.API.mutate(
-      request: GraphQLRequest<String>(
-        document: graphQLDocument,
-        variables: variables
-      ));
-
-  var response = await operation.response;
-  Map data = jsonDecode(response.data);
-  var userList  = data['createParty'];
-  return  userList;
-}
