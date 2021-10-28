@@ -49,7 +49,7 @@ class JoinedPartyWidget extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "${joinedPartyInfo.uid}",
+              "${joinedPartyInfo.partyUUID}",
               style: TextStyle(fontSize: 14),
             ),
 

@@ -15,7 +15,7 @@ class Overview extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 300,
+          height: 200,
           padding: EdgeInsets.all(8),
           child: ListView(
             scrollDirection:Axis.horizontal,
@@ -46,7 +46,9 @@ class Overview extends StatelessWidget {
               padding: const EdgeInsets.all(8),
               itemCount: joinedPartyController.joinedPartyList.length,
               itemBuilder: (BuildContext context, int index) {
-                return JoinedPartyWidget(joinedPartyInfo:joinedPartyController.joinedPartyList.value[index]);
+                return Container(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: JoinedPartyWidget(joinedPartyInfo:joinedPartyController.joinedPartyList.value[index]));
               },
             )
         ),

@@ -49,9 +49,8 @@ class _MyApp extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    fcm_ready();
     readJoinedParty();
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     _initNotiSetting();
     _initScrollControllerSetting();
   }
@@ -89,7 +88,7 @@ void fcm_ready() async {
   final joinedPartyController = Get.put(JoinedPartyController());
 // use the returned token to send messages to users from your custom server
   for(int i=0; i< joinedPartyController.joinedPartyList.length; i++){
-    print('FlutterFire Messaging Example: Subscribing to topic "${joinedPartyController.joinedPartyList[i]}".');
+    print('FlutterFire Messaging Example: Subscribing to topic "${joinedPartyController.joinedPartyList[i].toString()}".');
     await FirebaseMessaging.instance.subscribeToTopic(joinedPartyController.joinedPartyList[i].partyUUID);
   }
 
@@ -222,10 +221,12 @@ void readJoinedParty() async{
 
     var response = await operation.response;
     var data = response.data;
-    print(jsonDecode(data)["listJoinedParties"]["items"]);
-    var temp  = jsonDecode(data)["listJoinedParties"]["items"].map((s)=> JoinedParty.fromJson(s)).toList();
-    print(temp);
+
     joinedPartyController.joinedPartyList.value = jsonDecode(data)["listJoinedParties"]["items"].map((s)=> JoinedParty.fromJson(s)).toList();
+
+    fcm_ready();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   } on ApiException catch (e) {
     print('Query failed: $e');
   }
