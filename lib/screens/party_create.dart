@@ -4,12 +4,13 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:unist_taxt_party_app/controller/authDataController.dart';
 import 'package:unist_taxt_party_app/models/party.dart';
+import 'package:intl/intl.dart';
 
 class PartyCreateScreen extends StatelessWidget {
   const PartyCreateScreen({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +38,11 @@ class PartyCreateScreen extends StatelessWidget {
                   Container(
                     width: 300,
                     child: TextField(
-                      controller: departureController,
+                        controller: departureController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: '출발지',
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
@@ -54,12 +54,11 @@ class PartyCreateScreen extends StatelessWidget {
                   Container(
                     width: 300,
                     child: TextField(
-                      controller: arrivalController,
+                        controller: arrivalController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: '도착지',
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
@@ -71,12 +70,11 @@ class PartyCreateScreen extends StatelessWidget {
                   Container(
                     width: 300,
                     child: TextField(
-                      controller: descriptionController,
+                        controller: descriptionController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: '설명',
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
@@ -88,12 +86,11 @@ class PartyCreateScreen extends StatelessWidget {
                   Container(
                     width: 300,
                     child: TextField(
-                      controller: whereController,
+                        controller: whereController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: '모일 장소',
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
@@ -105,28 +102,38 @@ class PartyCreateScreen extends StatelessWidget {
                   Container(
                     width: 300,
                     child: TextField(
-                      controller: whenController,
+                        controller: whenController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: '모일 시각',
-                        )
-                    ),
+                        )),
                   ),
+                  RaisedButton(onPressed: () {
+                    Future<TimeOfDay?> selectedTime = showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    selectedTime.then((timeOfDay) {
+                      print(
+                          "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${timeOfDay!.hour}:${timeOfDay!.minute}");
+                      whenController.text =
+                          "${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${timeOfDay!.hour}:${timeOfDay!.minute}";
+                    });
+                  })
                 ],
               ),
               SizedBox(
                 height: 50,
               ),
               FlatButton(
-                onPressed: () async{
+                onPressed: () async {
                   Party newParty = Party.fromJson(await createPartyGQL(
-                    arrivalController.text,
-                    departureController.text,
-                    descriptionController.text,
-                    [authController.authData.value.username],
-                    whenController.text,
-                    whereController.text
-                  ));
+                      arrivalController.text,
+                      departureController.text,
+                      descriptionController.text,
+                      [authController.authData.value.username],
+                      whenController.text,
+                      whereController.text));
                   Get.offAndToNamed("/party", arguments: newParty);
                 },
                 child: Container(
@@ -138,7 +145,11 @@ class PartyCreateScreen extends StatelessWidget {
                       Radius.circular(30.0),
                     ),
                   ),
-                  child: Center(child: Text("생성하기", style: TextStyle(color: Colors.white),)),
+                  child: Center(
+                      child: Text(
+                    "생성하기",
+                    style: TextStyle(color: Colors.white),
+                  )),
                 ),
               ),
             ],
@@ -149,8 +160,7 @@ class PartyCreateScreen extends StatelessWidget {
   }
 }
 
-
-Future<dynamic> createParty() async{
+Future<dynamic> createParty() async {
   try {
     String graphQLDocument = '''mutation createParty {
         createParty(input: {arrival: "구영리", departure: "유니스트", description: "버스정류장에서 출발할 분 구합니다. 천원만 내세요. 나머지는 제가 부담합니다. 빨리요.ㅠㅠ", users: "", when: "2021-10-26 14:00:00", where: "버스정류장"}) {
@@ -161,29 +171,23 @@ Future<dynamic> createParty() async{
 
     var operation = Amplify.API.mutate(
         request: GraphQLRequest<String>(
-          document: graphQLDocument,
-        ));
+      document: graphQLDocument,
+    ));
 
     var response = await operation.response;
     Map data = jsonDecode(response.data);
-    List<dynamic> userList  = data['createParty'];
-    return  userList;
+    List<dynamic> userList = data['createParty'];
+    return userList;
   } on ApiException catch (e) {
     print('Query failed: $e');
-    return  <dynamic>[];
+    return <dynamic>[];
   }
 }
 
-
 Future<dynamic> createPartyGQL(
-    arrival,
-    departure,
-    description,
-    users,
-    when,
-    where
-    ) async{
-  String graphQLDocument = '''mutation createParty(\$arrival: String!, \$departure: String!, \$description: String!, \$users: [String]!, \$when: String!, \$where: String!){
+    arrival, departure, description, users, when, where) async {
+  String graphQLDocument =
+      '''mutation createParty(\$arrival: String!, \$departure: String!, \$description: String!, \$users: [String]!, \$when: String!, \$where: String!){
     createParty(input: {arrival: \$arrival,
       departure: \$departure, 
       description: \$description, 
@@ -213,14 +217,11 @@ Future<dynamic> createPartyGQL(
 
   var operation = Amplify.API.mutate(
       request: GraphQLRequest<String>(
-          document: graphQLDocument,
-          variables: variables
-      )
-  );
+          document: graphQLDocument, variables: variables));
 
   var response = await operation.response;
   print(response);
   Map data = jsonDecode(response.data);
-  var userList  = data['createParty'];
-  return  userList;
+  var userList = data['createParty'];
+  return userList;
 }

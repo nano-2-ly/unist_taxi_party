@@ -9,6 +9,7 @@ import 'package:unist_taxt_party_app/controller/partyListController.dart';
 import 'package:unist_taxt_party_app/controller/searchFilterController.dart';
 import 'package:unist_taxt_party_app/models/party.dart';
 import 'package:unist_taxt_party_app/widgets/partyListItem.dart';
+import 'package:intl/intl.dart';
 
 class SeachWidget extends StatelessWidget {
   const SeachWidget({Key? key}) : super(key: key);
@@ -103,7 +104,7 @@ Future<List<dynamic>> getParty(String departure, String arrival) async {
   Get.put(PartyListController());
   try {
     String graphQLDocument = '''query GetPartyList {
-      listParties (filter: {departure: {contains: "${departure}"},arrival: {contains: "${arrival}"},}) {
+      listParties (filter: {departure: {contains: "${departure}"},arrival: {contains: "${arrival}"},when: {contains: "${DateFormat('yyyy-MM-dd').format(DateTime.now())}"},}) {
         items {
           id
           updatedAt
