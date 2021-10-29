@@ -10,6 +10,7 @@ import 'package:unist_taxt_party_app/screens/party_create.dart';
 import 'package:unist_taxt_party_app/widgets/bottomBar.dart';
 import 'package:unist_taxt_party_app/widgets/overview.dart';
 import 'package:unist_taxt_party_app/widgets/search.dart';
+import 'package:unist_taxt_party_app/widgets/settingsWidget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -23,11 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    if(Amplify.Auth.getCurrentUser().isBlank!){
+    if (Amplify.Auth.getCurrentUser().isBlank!) {
       Get.toNamed('/entry');
-    }else{
+    } else {
       Amplify.Auth.getCurrentUser().then((user) {
-
         setState(() {
           _user = user;
           controller.authData.value = user;
@@ -36,8 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
         print((error as AuthException).message);
       });
     }
-
-
   }
 
   @override
@@ -45,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async{
-              Get.toNamed('/party-create');
-              // await createPartyGQL();
-            },
-            child: const Icon(Icons.add),
-            backgroundColor: Colors.deepPurple,
-          ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            Get.toNamed('/party-create');
+            // await createPartyGQL();
+          },
+          child: const Icon(Icons.add),
+          backgroundColor: Colors.deepPurple,
+        ),
         appBar: AppBar(
           title: Text('Home'),
           actions: [
@@ -60,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Amplify.Auth.signOut().then((_) {
                   Get.toNamed('/entry');
-
                 });
               },
               child: Icon(
@@ -72,10 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
-          children:[
+          children: [
             Overview(),
             SeachWidget(),
-            Container(),
+            SettingsWidget(),
           ],
         ),
         bottomNavigationBar: BottomBar(),
@@ -83,4 +80,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
