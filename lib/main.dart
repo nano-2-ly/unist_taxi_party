@@ -32,9 +32,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureAmplify();
   runApp(MyApp());
-
 }
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -69,16 +67,14 @@ class _MyApp extends State<MyApp> {
         GetPage(name: '/entry', page: () => EntryScreen()),
         GetPage(name: '/confirm', page: () => ConfirmScreen()),
         GetPage(name: '/confirm-reset', page: () => ConfirmResetScreen()),
-        GetPage(name: '/party-join-confirm', page: () => PartyJoinConfirmScreen()),
+        GetPage(
+            name: '/party-join-confirm', page: () => PartyJoinConfirmScreen()),
         GetPage(name: '/party', page: () => PartyScreen()),
         GetPage(name: '/party-create', page: () => PartyCreateScreen()),
       ],
-
     );
   }
 }
-
-
 
 void fcm_ready() async {
   final FirebaseApp _initialization = await Firebase.initializeApp();
@@ -87,9 +83,11 @@ void fcm_ready() async {
   final partyController = Get.put(PartyController());
   final joinedPartyController = Get.put(JoinedPartyController());
 // use the returned token to send messages to users from your custom server
-  for(int i=0; i< joinedPartyController.joinedPartyList.length; i++){
-    print('FlutterFire Messaging Example: Subscribing to topic "${joinedPartyController.joinedPartyList[i].toString()}".');
-    await FirebaseMessaging.instance.subscribeToTopic(joinedPartyController.joinedPartyList[i].partyUUID);
+  for (int i = 0; i < joinedPartyController.joinedPartyList.length; i++) {
+    print(
+        'FlutterFire Messaging Example: Subscribing to topic "${joinedPartyController.joinedPartyList[i].toString()}".');
+    await FirebaseMessaging.instance
+        .subscribeToTopic(joinedPartyController.joinedPartyList[i].partyUUID);
   }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -102,27 +100,19 @@ void fcm_ready() async {
       Chat _chat = Chat.fromJson(jsonDecode(message.notification!.body!));
       print(_chat);
 
-
       writeDB(_chat);
 
-
       print("1");
-      if(partyController.party.value.partyUUID != _chat.partyUUID) {
+      if (partyController.party.value.partyUUID != _chat.partyUUID) {
         print("2");
         _showNotification(message);
-      }else{
+      } else {
         print("3");
         controller.addChat(_chat);
-
       }
-
     }
-
-
   });
 }
-
-
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -144,18 +134,16 @@ void _initScrollControllerSetting() {
       } else {
         chatScrollontroller.chatAlwaysFocusToBottom.value = true;
       }
-    }
-    else{
+    } else {
       chatScrollontroller.chatAlwaysFocusToBottom.value = false;
     }
   });
 }
 
-
 void _initNotiSetting() async {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final initSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@mipmap/ic_launcher');
   final initSettingsIOS = IOSInitializationSettings(
     requestSoundPermission: false,
     requestBadgePermission: false,
@@ -173,7 +161,8 @@ void _initNotiSetting() async {
 Future<void> _showNotification(RemoteMessage message) async {
   var _flutterLocalNotificationsPlugin;
 
-  var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/launcher_icon');
   var initializationSettingsIOS = IOSInitializationSettings();
 
   var initializationSettings = InitializationSettings(
@@ -198,8 +187,7 @@ Future<void> _showNotification(RemoteMessage message) async {
   );
 }
 
-
-void readJoinedParty() async{
+void readJoinedParty() async {
   final joinedPartyController = Get.put(JoinedPartyController());
   try {
     String graphQLDocument = '''query GetJoinedParties {
@@ -214,19 +202,19 @@ void readJoinedParty() async{
     }''';
 
     var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-            document: graphQLDocument,
-            variables: {})
-    );
+        request:
+            GraphQLRequest<String>(document: graphQLDocument, variables: {}));
 
     var response = await operation.response;
     var data = response.data;
 
-    joinedPartyController.joinedPartyList.value = jsonDecode(data)["listJoinedParties"]["items"].map((s)=> JoinedParty.fromJson(s)).toList();
+    joinedPartyController.joinedPartyList.value =
+        jsonDecode(data)["listJoinedParties"]["items"]
+            .map((s) => JoinedParty.fromJson(s))
+            .toList();
 
     fcm_ready();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
   } on ApiException catch (e) {
     print('Query failed: $e');
   }
